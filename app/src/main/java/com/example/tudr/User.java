@@ -13,8 +13,9 @@ public class User {
 
     public ArrayList<String> getClasses() {
         ArrayList<String> classes =  new ArrayList<>();
-        classes.add("CSC 350");
-        classes.add("MAT 205");
+        classes.add("CSC350");
+        classes.add("MAT205");
+        classes.add("PHY201");
         return classes;
     }
 

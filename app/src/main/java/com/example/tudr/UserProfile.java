@@ -1,5 +1,4 @@
 package com.example.tudr;
-g
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,22 +50,31 @@ public class UserProfile extends AppCompatActivity {
 
         }
         ImageView img = findViewById(R.id.imageView);
-//        img.setImageResource(R.drawable.anonymous_person);
         TextView name = findViewById(R.id.name);
         name.setText("Tomer Singal");
         name.setTextSize(20);
 
         RequestParams params = new RequestParams();
-        params.put("key", "your name");
-        params.put("more", "data");
-        //------------------------------------------------------//
-        LocalServerClient.post("server.php", params , new JsonHttpResponseHandler() {
-
+        params.put("student_id", 5);
+        params.put("course_num", "CSC335");
+        params.put("location", "TCNJ lib");
+        LocalServerClient.post("submit_request.php", params, new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                System.out.println("--SUCCESS--++++++++++++++++++++++++++++++++");
+
             }
         });
-        //------------------------------------------------------//
+
+//        RequestParams params = new RequestParams();
+//        params.put("key", "your name");
+//        params.put("more", "data");
+//        //------------------------------------------------------//
+//        LocalServerClient.post("server.php", params , new JsonHttpResponseHandler() {
+//
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                System.out.println("--SUCCESS--++++++++++++++++++++++++++++++++");
+//            }
+//        });
+//        //------------------------------------------------------//
     }
 
     private LinearLayout getTutoredClasses(User user) {
@@ -81,6 +89,25 @@ public class UserProfile extends AppCompatActivity {
 
         TextView view = new TextView(this);
         view.setText("Classes Tutoring");
+
+        for (int i = 0; i < clist.getChildCount(); i++) {
+            final String course = classes.get(i);
+            System.out.println("=========================" + course);
+            View v = clist.getChildAt(i);
+            v.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (v instanceof TextView) {
+                        RequestParams params = new RequestParams();
+                        params.put("name", course);
+                        LocalServerClient.post("getRequests.php", params, new JsonHttpResponseHandler() {
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                            }
+                        });
+                    }
+                }
+            });
+        }
 
         linLayout.addView(view);
         linLayout.addView(clist);
@@ -98,5 +125,9 @@ public class UserProfile extends AppCompatActivity {
         edit.clear();
         edit.apply();
         logIn();
+    }
+
+    private void getRequests(String courseName) {
+
     }
 }
